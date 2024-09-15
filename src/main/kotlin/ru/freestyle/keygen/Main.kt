@@ -10,7 +10,7 @@ import ru.freestyle.keygen.github.PasswordContext
 import ru.freestyle.keygen.keytab.KeyTab
 
 fun main() {
-    println("Starting Droch Passowrd")
+    println("Starting Droch Password")
     runBlocking {
         PasswordContext().generatePasswords()
     }
