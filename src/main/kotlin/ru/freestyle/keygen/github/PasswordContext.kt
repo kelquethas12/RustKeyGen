@@ -3,17 +3,19 @@ package ru.freestyle.keygen.github
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import ru.freestyle.keygen.httpClient
-
-val passwordKeyGen = mutableListOf<String>()
+import ru.freestyle.keygen.Main
 
 class PasswordContext {
 
+    companion object {
+        val passwordKeyGen = mutableListOf<String>()
+        var totalPasswordKeyGen: Int = 0
+    }
 
     suspend fun generatePasswords() {
             try {
                 println("Making request to the server...")
-                val response = httpClient.get("https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/four-digit-pin-codes-sorted-by-frequency-withcount.csv")
+                val response = Main.httpClient.get("https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/four-digit-pin-codes-sorted-by-frequency-withcount.csv")
 
                 if (response.status.isSuccess()) {
                     val passwords = response.bodyAsText()
@@ -27,6 +29,7 @@ class PasswordContext {
                         println("Response body is empty.")
                     }
                     passwordKeyGen.reversed()
+                    totalPasswordKeyGen = passwordKeyGen.size
                 } else {
                     println("Failed to retrieve data. Status: ${response.status}")
                 }
@@ -34,7 +37,7 @@ class PasswordContext {
                 println("Exception occurred: ${e.message}")
                 e.printStackTrace()
             } finally {
-                httpClient.close()
+                Main.httpClient.close()
             }
 
     }

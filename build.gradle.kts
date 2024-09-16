@@ -2,6 +2,8 @@ plugins {
     kotlin("jvm") version "2.0.0"
     id("application")
     id("com.github.johnrengelman.shadow") version "8.1.1"
+
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "org.example"
@@ -11,10 +13,12 @@ repositories {
     mavenCentral()
 }
 
+javafx {
+    version = "17"
+    modules("javafx.controls", "javafx.graphics")
+}
 
 val ktorVersion = "2.3.11"
-
-
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -23,15 +27,10 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("com.github.kwhat:jnativehook:2.2.2")
-    testImplementation(kotlin("test"))
+
+    implementation("no.tornado:tornadofx:1.7.20")
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(8)
-}
 tasks {
     shadowJar {
         archiveBaseName.set("RustKeyGen")
